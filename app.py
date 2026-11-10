@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from datetime import date
 from pathlib import Path
 from uuid import uuid4
 
@@ -15,10 +14,6 @@ UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
-
-@app.context_processor
-def inject_current_year():
-    return {'current_year': date.today().year}
 
 try:
     model = joblib.load(BASE_DIR / 'model.pkl')
