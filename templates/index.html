@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MushroomAI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            scroll-behavior:smooth;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#e9e7e2;
+            color:#1d4d2f;
+            overflow-x:hidden;
+        }
+
+        /* NAVBAR */
+
+        nav{
+            width:100%;
+            height:80px;
+            background:white;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:0 60px;
+            position:fixed;
+            top:0;
+            z-index:1000;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo{
+            font-size:38px;
+            font-weight:800;
+            color:#174a2c;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:35px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:#174a2c;
+            font-weight:600;
+        }
+
+        /* HERO */
+
+        .hero{
+            min-height:100vh;
+
+            background:
+            linear-gradient(rgba(229,171,119,0.88),
+            rgba(229,171,119,0.88)),
+            url('/static/bg.png');
+
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+
+            position:relative;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            overflow:hidden;
+            padding-top:80px;
+        }
+
+        .hero-content{
+            text-align:center;
+            z-index:2;
+        }
+
+        .hero-content h1{
+            font-size:88px;
+            line-height:1;
+            font-weight:800;
+            color:#174a2c;
+        }
+
+        .hero-content h2{
+            font-size:42px;
+            color:#d17b00;
+            margin-top:20px;
+        }
+
+        .hero-content p{
+            margin-top:20px;
+            font-size:18px;
+            color:#174a2c;
+        }
+
+        .hero-content span{
+            font-weight:700;
+        }
+
+        .edible-text{
+            color:green;
+        }
+
+        .poison-text{
+            color:#c0392b;
+        }
+
+        .hero-btn{
+            margin-top:30px;
+            padding:16px 35px;
+            border:none;
+            border-radius:12px;
+            background:#174a2c;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        /* DECORATIONS */
+
+        .decor{
+            position:absolute;
+            opacity:0.9;
+            z-index:1;
+        }
+
+        .m1{
+            width:360px;
+            left:-30px;
+            bottom:0;
+        }
+
+        .m2{
+            width:330px;
+            right:-20px;
+            top:90px;
+        }
+
+        .leaf1{
+            width:250px;
+            left:120px;
+            top:250px;
+        }
+
+        /* SECTION */
+
+        section{
+            padding:100px 8%;
+        }
+
+        .section-title{
+            text-align:center;
+            font-size:65px;
+            margin-bottom:20px;
+            color:#d17b00;
+            font-weight:800;
+        }
+
+        .section-sub{
+            text-align:center;
+            max-width:700px;
+            margin:auto;
+            margin-bottom:60px;
+            color:#555;
+            font-size:18px;
+        }
+
+        .safety-notice{
+            max-width:800px;
+            margin:-35px auto 50px;
+            padding:16px 20px;
+            border-left:5px solid #c0392b;
+            border-radius:8px;
+            background:#fff4f2;
+            color:#70251c;
+            text-align:center;
+            font-weight:600;
+        }
+
+        /* CARDS */
+
+        .card-container{
+            display:flex;
+            justify-content:center;
+            gap:30px;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            width:300px;
+            border-radius:25px;
+            text-align:center;
+            transition:0.3s;
+            border:3px dashed #d17b00;
+            box-shadow:0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+        }
+
+        .card h3{
+            margin-bottom:15px;
+            color:#174a2c;
+            font-size:26px;
+        }
+
+        .card p{
+            color:#666;
+        }
+
+        /* PREDICTION */
+
+        .predict-section{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:80px;
+            flex-wrap:wrap;
+        }
+
+        .predict-mushroom{
+            width:420px;
+        }
+
+        .predict-box{
+            background:white;
+            padding:55px;
+            width:600px;
+            border-radius:35px;
+            border:3px dashed #d17b00;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .predict-box small{
+            color:#d17b00;
+            letter-spacing:3px;
+            font-weight:700;
+            font-size:15px;
+        }
+
+        .predict-box h2{
+            font-size:70px;
+            line-height:1;
+            margin:20px 0;
+            color:#174a2c;
+            font-weight:800;
+        }
+
+        .predict-box p{
+            color:#555;
+            margin-bottom:25px;
+        }
+
+        .upload-box{
+            border:3px dashed #d17b00;
+            border-radius:25px;
+            height:320px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            overflow:hidden;
+            cursor:pointer;
+            margin-top:25px;
+            background:#fafafa;
+        }
+
+        .upload-box img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+
+        .upload-text{
+            color:#174a2c;
+            font-size:18px;
+            font-weight:500;
+        }
+
+        input[type=file]{
+            display:none;
+        }
+
+        .predict-btn{
+            width:100%;
+            padding:18px;
+            margin-top:20px;
+            border:none;
+            border-radius:14px;
+            background:#174a2c;
+            color:white;
+            font-size:20px;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .result{
+            margin-top:20px;
+            padding:18px;
+            border-radius:14px;
+            text-align:center;
+            font-size:28px;
+            font-weight:700;
+        }
+
+        .edible{
+            background:#d4edda;
+            color:#155724;
+        }
+
+        .poisonous{
+            background:#f8d7da;
+            color:#721c24;
+        }
+
+        footer{
+            background:#0f4a13;
+            color:white;
+            padding:50px;
+            margin-top:100px;
+            text-align:center;
+        }
+
+        footer h2{
+            font-size:34px;
+        }
+
+        footer p{
+            margin-top:10px;
+        }
+
+        @media(max-width:768px){
+
+            nav{
+                padding:0 20px;
+            }
+
+            .nav-links{
+                gap:15px;
+            }
+
+            .hero-content h1{
+                font-size:55px;
+            }
+
+            .hero-content h2{
+                font-size:30px;
+            }
+
+            .section-title{
+                font-size:45px;
+            }
+
+            .predict-box{
+                width:100%;
+                padding:35px;
+            }
+
+            .predict-box h2{
+                font-size:45px;
+            }
+
+            .predict-mushroom{
+                width:280px;
+            }
+
+            .m1,.m2,.leaf1{
+                display:none;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">🍄 MushroomAI</div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#works">How It Works</a>
+            <a href="#predict">Predict</a>
+        </div>
+
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+
+        <div class="hero-content">
+
+            <h1>Mushroom<br>Edibility<br>Prediction</h1>
+
+            <h2>Using Machine Learning</h2>
+
+            <p>
+                Upload an image of a mushroom and our AI model predicts whether it is
+                <span class="edible-text">Edible</span> or
+                <span class="poison-text">Poisonous</span>.
+            </p>
+
+            <a href="#predict">
+                <button class="hero-btn">Get Started ↓</button>
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+        <h1 class="section-title">About This Project</h1>
+
+        <p class="section-sub">
+            This application uses Machine Learning models trained on mushroom datasets to classify mushrooms as edible or poisonous.
+        </p>
+
+        <div class="card-container">
+
+            <div class="card">
+                <h3>Machine Learning</h3>
+                <p>Trained using ML algorithms.</p>
+            </div>
+
+            <div class="card">
+                <h3>Image Based</h3>
+                <p>Real-time image prediction.</p>
+            </div>
+
+            <div class="card">
+                <h3>Safety First</h3>
+                <p>Helps identify poisonous mushrooms.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+
+    <section id="works">
+
+        <h1 class="section-title">How It Works</h1>
+
+        <div class="card-container">
+
+            <div class="card">
+                <h3>1. Upload Image</h3>
+                <p>User uploads mushroom image.</p>
+            </div>
+
+            <div class="card">
+                <h3>2. Image Processing</h3>
+                <p>Image resized into model format.</p>
+            </div>
+
+            <div class="card">
+                <h3>3. Feature Extraction</h3>
+                <p>AI extracts image features.</p>
+            </div>
+
+            <div class="card">
+                <h3>4. ML Prediction</h3>
+                <p>Model predicts edible or poisonous.</p>
+            </div>
+
+            <div class="card">
+                <h3>5. Result Generation</h3>
+                <p>Prediction shown instantly.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- PREDICTION -->
+
+    <section id="predict">
+        <h1 class="section-title">Mushroom Prediction</h1>
+        <p class="section-sub">
+            Upload an image of a mushroom to predict whether it is edible or poisonous.
+        </p>
+
+        <p class="safety-notice" role="note">
+            Educational demo only: this prediction may be wrong. Never eat a mushroom
+            based on this result; consult a qualified local expert.
+        </p>
+
+        <div class="predict-section">
+
+            <img src="{{ url_for('static', filename='mushroom_bottom.png') }}" class="predict-mushroom">
+
+            <div class="predict-box">
+
+
+
+
+                <form action="/predict#predict" method="POST" enctype="multipart/form-data">
+
+                    <label class="upload-box">
+
+                        <input type="file" name="file" accept="image/*" onchange="previewImage(event)">
+
+                        {% if uploaded_image %}
+
+                            <img id="preview" src="{{ url_for('static', filename='uploads/' ~ uploaded_image) }}">
+
+                        {% else %}
+
+                            <div class="upload-text" id="uploadText">
+                                Click here to upload mushroom image
+                            </div>
+
+                            <img id="preview" style="display:none;">
+
+                        {% endif %}
+
+                    </label>
+
+                    <button type="submit" class="predict-btn">
+                        Predict
+                    </button>
+
+                </form>
+
+                {% if prediction %}
+
+                    <div class="result {{ 'edible' if 'Edible' in prediction else 'poisonous' }}">
+                        {{ prediction }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h2>🍄 MushroomAI</h2>
+
+        <p>Mushroom Edibility Prediction using Machine Learning.</p>
+
+        <p>© 2025 MushroomAI | All Rights Reserved</p>
+
+    </footer>
+
+    <script>
+
+        function previewImage(event){
+
+            const preview = document.getElementById('preview');
+
+            const uploadText = document.getElementById('uploadText');
+
+            preview.src = URL.createObjectURL(event.target.files[0]);
+
+            preview.style.display = "block";
+
+            if(uploadText){
+                uploadText.style.display = "none";
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
